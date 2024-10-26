@@ -3,38 +3,35 @@ import pandas as pd
 from mlxtend.frequent_patterns import apriori, association_rules
 import re
 
-def formatar_produto(produto, string_a, string_final):
-    # Remove especificações e mantém apenas o nome
-    produto = re.sub(r'\s[^,]*$', '', produto)
-    if produto.lower().startswith(string_a):
-        return string_final
-
-    return produto.capitalize()
+def formatar_produto(produto):
+    produto = produto.strip().capitalize()  # Remove espaços em branco extras e capitaliza
+    # Substituições específicas de prefixo
+    produto = re.sub(r'^\b(Ca\w*)', 'Café', produto, flags=re.IGNORECASE)
+    produto = re.sub(r'^\b(Pã\w*)', 'Pão', produto, flags=re.IGNORECASE)
+    produto = re.sub(r'^\b(Pr\w*)', 'Presunto', produto, flags=re.IGNORECASE)
+    produto = re.sub(r'^\b(Qu\w*)', 'Queijo', produto, flags=re.IGNORECASE)
+    produto = re.sub(r'^\b(Pa\w*)', 'Pastel', produto, flags=re.IGNORECASE)
+    produto = re.sub(r'^\b(Do\w*)', 'Doce', produto, flags=re.IGNORECASE)
+    produto = re.sub(r'^\b(Re\w*)', 'Refri', produto, flags=re.IGNORECASE)
+    return produto
 
 def formatar_produtos(produtos):
-    return [
-        formatar_produto(produto.strip(), 'ca', 'Café') if 'ca' in produto.lower() else
-        formatar_produto(produto.strip(), 'pã', 'Pão') if 'pã' in produto.lower() else
-        formatar_produto(produto.strip(), 'pr', 'Presunto') if 'pr' in produto.lower() else
-        formatar_produto(produto.strip(), 'qu', 'Queijo') if 'qu' in produto.lower() else
-        formatar_produto(produto.strip(), 'pa', 'Pastel') if 'pa' in produto.lower() else
-        formatar_produto(produto.strip(), 'do', 'Doce') if 'ca' in produto.lower() else
-        formatar_produto(produto.strip(), 're', 'Refri') if 'ca' in produto.lower() else
-        re.sub(r'\s[^,]*$', '', produto.strip()) for produto in produtos
-    ]
+    return [formatar_produto(produto) for produto in produtos]
 
-caminho_arquivo = 'C:\\Users\\leand\\OneDrive\\Documentos\\meus-projetos\\algoritmos-python\\mineracao-dados\\Trabalho1\\padaria_trab.json'
+#CAMINHO ARTHUR
+caminho_arquivo = 'C:\\Users\\arthu\\OneDrive\Documentos\\ThuRar\\CienciaDaComputacao_UFSM\\2024.2\Mineração de Dados\\T1_Leandro\\mineracao-de-dados\\Trabalho1\\padaria_trab.json'
+caminho_novo_arquivo = 'C:\\Users\\arthu\\OneDrive\Documentos\\ThuRar\\CienciaDaComputacao_UFSM\\2024.2\Mineração de Dados\\T1_Leandro\\mineracao-de-dados\\Trabalho1\\produtos_atualizados.json'
 
-caminho_novo_arquivo = 'C:\\Users\\leand\\OneDrive\\Documentos\\meus-projetos\\algoritmos-python\\mineracao-dados\\Trabalho1\\produtos_atualizados.json'
+#CAMINHO LEANDRO
+#caminho_arquivo = 'C:\\Users\\leand\\OneDrive\\Documentos\\meus-projetos\\algoritmos-python\\mineracao-dados\\Trabalho1\\padaria_trab.json'
+#caminho_novo_arquivo = 'C:\\Users\\leand\\OneDrive\\Documentos\\meus-projetos\\algoritmos-python\\mineracao-dados\\Trabalho1\\produtos_atualizados.json'
 
 # Abrindo e lendo o arquivo JSON
 with open(caminho_arquivo, 'r') as arquivo:
     dados = json.load(arquivo)
 
-# Agora, 'dados' contém o conteúdo do arquivo JSON como um dicionário
+# Converte o JSON para DataFrame e remove a coluna 'compra' (se necessário)
 df = pd.json_normalize(dados)
-
-# Remove a coluna "compra" irrelevante para a Mineração
 if 'compra' in df.columns:
     df = df.drop(columns=['compra'])
 
@@ -63,13 +60,20 @@ print(df_final)
 
 
 # Principio Apriori:
-frequent_itemsets = apriori(df_final, min_support=0.1, use_colnames=True)
+frequent_itemsets = apriori(df_final, min_support=0.06, use_colnames=True)
 
 # Gerando regras de associação
-rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
+rules = association_rules(frequent_itemsets, metric="lift", min_threshold=0.6)
+
+
+item_counts = df_final.sum().sort_values(ascending=False)
+print("\nFrequência de itens:")
+print(item_counts)
+
 
 # Exibindo as regras encontradas
-print("Regras de Associação:")
+print("\nRegras de Associação:")
+print(f"\nTotal de regras de associação encontradas: {len(rules)}")
 print(rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']].to_string(index=False))
 
 # 1. Exibir as 5 principais regras
@@ -83,9 +87,3 @@ max_lift_rule = rules.loc[rules['lift'].idxmax()]
 print("\nA regra mais influente (produto 1 para 1):")
 print(f"{list(max_lift_rule['antecedents'])} => {list(max_lift_rule['consequents'])}")
 
-# 3. Regras que implicam a compra de "Doce"
-rules_with_doce = rules[rules['consequents'].apply(lambda x: 'Doce' in x)]
-print("\nRegras que implicam a compra de 'Doce':")
-print(rules_with_doce[['antecedents', 'consequents', 'support', 'confidence', 'lift']].to_string(index=False))
-
-input()
