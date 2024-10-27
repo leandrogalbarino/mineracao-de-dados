@@ -4,6 +4,7 @@ from mlxtend.frequent_patterns import apriori, association_rules
 import re
 
 def formatar_produto(produto):
+    produto = re.sub(r'[^\w\s-]', '', produto)
     produto = produto.strip().capitalize()  # Remove espaços em branco extras e capitaliza
     # Substituições específicas de prefixo
     produto = re.sub(r'^\b(Ca\w*)', 'Café', produto, flags=re.IGNORECASE)
@@ -27,7 +28,7 @@ caminho_novo_arquivo = 'C:\\Users\\arthu\\OneDrive\Documentos\\ThuRar\\CienciaDa
 #caminho_novo_arquivo = 'C:\\Users\\leand\\OneDrive\\Documentos\\meus-projetos\\algoritmos-python\\mineracao-dados\\Trabalho1\\produtos_atualizados.json'
 
 # Abrindo e lendo o arquivo JSON
-with open(caminho_arquivo, 'r') as arquivo:
+with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
     dados = json.load(arquivo)
 
 # Converte o JSON para DataFrame e remove a coluna 'compra' (se necessário)
