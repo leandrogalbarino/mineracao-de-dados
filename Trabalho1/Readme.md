@@ -23,9 +23,6 @@ Por fim, formatamos os nomes dos produtos para garantir uniformidade. Essa etapa
 5 - Transformação em Colunas de True e False
 Nessa etapa, criamos uma coluna para cada produto, indicando True se o produto está presente na compra e False se não está. Isso foi feito através da explosão da coluna de produtos e da aplicação do one-hot encoding, permitindo que cada produto fosse representado como uma coluna binária. Após agrupar os dados, as ocorrências foram somadas e convertidas para valores booleanos.
 
-
-
-
 6 - Aplicar o Princípio Apriori
 Utilizamos o Princípio Apriori para identificar conjuntos frequentes de itens. Esse princípio nos permite encontrar quais produtos são frequentemente comprados juntos e gerar regras de associação baseadas em métricas como suporte, confiança e lift.
 
@@ -36,6 +33,8 @@ As 5 principais regras de associação foram exibidas, juntamente com a regra ma
 
 8 - Interpretação das Regras
 As regras geradas incluem informações sobre o antecedente (produto analisado), consequente (produto frequentemente comprado junto), suporte (frequência da regra em relação ao total de transações), confiança (probabilidade de compra do consequente quando o antecedente é adquirido) e lift (medida da frequência do consequente em relação à sua frequência global quando o antecedente é comprado).
+
+
 
 
 

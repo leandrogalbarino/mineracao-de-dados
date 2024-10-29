@@ -19,12 +19,12 @@ def formatar_produtos(produtos):
     return [formatar_produto(produto) for produto in produtos]
 
 #CAMINHO ARTHUR
-caminho_arquivo = 'C:\\Users\\arthu\\OneDrive\Documentos\\ThuRar\\CienciaDaComputacao_UFSM\\2024.2\Mineração de Dados\\T1_Leandro\\mineracao-de-dados\\Trabalho1\\padaria_trab.json'
-caminho_novo_arquivo = 'C:\\Users\\arthu\\OneDrive\Documentos\\ThuRar\\CienciaDaComputacao_UFSM\\2024.2\Mineração de Dados\\T1_Leandro\\mineracao-de-dados\\Trabalho1\\produtos_atualizados.json'
+# caminho_arquivo = 'C:\\Users\\arthu\\OneDrive\Documentos\\ThuRar\\CienciaDaComputacao_UFSM\\2024.2\Mineração de Dados\\T1_Leandro\\mineracao-de-dados\\Trabalho1\\padaria_trab.json'
+# caminho_novo_arquivo = 'C:\\Users\\arthu\\OneDrive\Documentos\\ThuRar\\CienciaDaComputacao_UFSM\\2024.2\Mineração de Dados\\T1_Leandro\\mineracao-de-dados\\Trabalho1\\produtos_atualizados.json'
 
 #CAMINHO LEANDRO
-#caminho_arquivo = 'C:\\Users\\leand\\OneDrive\\Documentos\\meus-projetos\\algoritmos-python\\mineracao-dados\\Trabalho1\\padaria_trab.json'
-#caminho_novo_arquivo = 'C:\\Users\\leand\\OneDrive\\Documentos\\meus-projetos\\algoritmos-python\\mineracao-dados\\Trabalho1\\produtos_atualizados.json'
+caminho_arquivo = 'C:\\Users\\leand\\OneDrive\\Documentos\\meus-projetos\\algoritmos-python\\mineracao-dados\\Trabalho1\\padaria_trab.json'
+caminho_novo_arquivo = 'C:\\Users\\leand\\OneDrive\\Documentos\\meus-projetos\\algoritmos-python\\mineracao-dados\\Trabalho1\\produtos_atualizados.json'
 
 # Abrindo e lendo o arquivo JSON
 with open(caminho_arquivo, 'r') as arquivo:
@@ -86,4 +86,5 @@ max_lift_rule = rules.loc[rules['lift'].idxmax()]
 
 print("\nA regra mais influente (produto 1 para 1):")
 print(f"{list(max_lift_rule['antecedents'])} => {list(max_lift_rule['consequents'])}")
+input() # esperar tecla
 
