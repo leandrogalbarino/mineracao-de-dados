@@ -134,8 +134,7 @@ mostrar_grafico_ocorrencias(contagem_itens2, "Genérico")
 # 8. Exibindo todas as regras de associação encontradas
 print("\nRegras de Associação:")
 print(f"\nTotal de regras de associação encontradas: {len(regras)}")
-print(regras[['antecedents', 'consequents', 'support',
-      'confidence', 'lift']].to_string(index=False))
+print(regras[['antecedents', 'consequents', 'support', 'confidence', 'lift']].to_string(index=False))
 
 # 9. Exibir as 5 principais regras de associação
 top_regras = regras.sort_values('lift', ascending=False).head(5)
@@ -146,14 +145,13 @@ print(top_regras[['antecedents', 'consequents', 'support',
 # 10. Exibir a regra mais influente
 regra_maior_lift = regras.loc[regras['lift'].idxmax()]
 print("\nA regra mais influente (produto 1 para 1):")
-print(f"{list(regra_maior_lift['antecedents'])} => {
-      list(regra_maior_lift['consequents'])}")
+print(f"{list(regra_maior_lift['antecedents'])} => {list(regra_maior_lift['consequents'])}")
 
 # 11. Exibir as regras que implicam Doce
 regras_com_doce = regras2[regras2['consequents'].apply(lambda x: 'Doce' in x)]
 print("\nRegras que implicam a compra de 'Doce':")
-print(regras_com_doce[['antecedents', 'consequents',
-      'support', 'confidence', 'lift']].to_string(index=False))
+print(regras_com_doce[['antecedents', 'consequents','support', 'confidence', 'lift']].to_string(index=False))
+
 
 #12. Mostra um gráfico com as regras de associação
 graficos_regras_de_associacao(regras)
